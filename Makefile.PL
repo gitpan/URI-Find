@@ -1,6 +1,8 @@
+# $Id: Makefile.PL,v 1.5 2001/07/27 12:08:41 roderick Exp $
+
 # A template for Makefile.PL used by Arena Networks.
 # - Set the $PACKAGE variable to the name of your module.
-# - Set $LAST_API_CHANGE to reflect the last version you changed the API 
+# - Set $LAST_API_CHANGE to reflect the last version you changed the API
 #   of your module.
 # - Fill in your dependencies in PREREQ_PM
 # Alternatively, you can say the hell with this and use h2xs.
@@ -38,5 +40,8 @@ WriteMakefile(
     'dist'          => { COMPRESS   => 'gzip -9',
                          SUFFIX     => '.gz',
                          DIST_DEFAULT   => 'all tardist',
+                         PREOP          => '$(MAKE) ci',
+                         CI             => 'cvs commit',
+                         RCS_LABEL      => 'cvs tag -F v$(VERSION_SYM)',
                        },
 );

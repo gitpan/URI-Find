@@ -2,9 +2,11 @@ NAME
          URI::Find - Find URIs in arbitrary text
 
 SYNOPSIS
-         use URI::Find;
+         require URI::Find;
 
-         $how_many_found = find_uris($text, \&callback);
+         my $finder = URI::Find->new(\&callback);
+
+         $how_many_found = $finder->find(\$text);
 
 DESCRIPTION
        This module does one thing: Finds URIs and URLs in plain
@@ -15,5 +17,9 @@ AUTHOR
        Michael G Schwern <schwern@pobox.com> with insight from
        Uri Gutman and Jeff Pinyan.
 
+       Currently maintained by Roderick Schertler <roderick@argon.org>.
+
 
 See the INSTALL document for more details.
+
+$Id: README,v 1.4 2001/07/27 12:13:40 roderick Exp $
