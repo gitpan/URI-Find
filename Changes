@@ -1,5 +1,24 @@
 Revision history for Perl module URI::Find.
 
+20090316  Mon Mar 16 16:18:10 PDT 2009
+    New Features
+    * Added optional replacement function to find(). Now you 
+      can not only replace URLs found, but also the rest of the text around
+      them in one fell swoop. (Mike Schilli) [rt.cpan.org 20486]
+    * Whitespace inside <...> is now ignored as per the suggestion of
+      RFC 3986 appendix C. [rt.cpan.org 20483]
+
+    Other
+    * Michael G Schwern is now primary maintainer again.  Thanks for all your
+      work, Roderick!
+    * Repository moved to http://github.com/schwern/uri-find
+    * Now requires Test::More
+    * Verisoning scheme changed to ISO date integers
+    * Minimum Perl version is now 5.6.0.
+
+
+0.17 Fri Mar  6 00:02:26 PST 2009
+
 0.16 Fri Jul 22 06:00:24 EDT 2005
     - Oops, make the URI::Find::Schemeless->top_level_domain_re case
       insensitive, as it should be and the docs claimed it was.  Thanks
@@ -8,15 +27,15 @@ Revision history for Perl module URI::Find.
 0.15 Tue Mar 22 07:23:17 EST 2005
     - Have all functions croak if invoked with the wrong number of
       arguments.  Add URI::Find->badinvo.
-	https://rt.cpan.org/NoAuth/Bug.html?id=1845
+        https://rt.cpan.org/NoAuth/Bug.html?id=1845
     - Mention DARREN's urifind script in the man page.
     - Oops, URI::URL::strict was turned on and left on.  Put it back the
       way you found it.  Thanks to Chris Nandor.
-	https://rt.cpan.org/NoAuth/Bug.html?id=11906
+        https://rt.cpan.org/NoAuth/Bug.html?id=11906
     - Schemeless.pm:
-    	- Find '<x>intag.com</x>'.
-	- Get $tldRe from a new class method, ->top_level_domain_re.
-	- Update top level domain list.
+        - Find '<x>intag.com</x>'.
+        - Get $tldRe from a new class method, ->top_level_domain_re.
+        - Update top level domain list.
 
 0.13 Sat Oct  9 08:20:04 EDT 2004
     - Add copyright notice.
@@ -61,5 +80,3 @@ Revision history for Perl module URI::Find.
 
 0.01  Mon Jan 31 19:12:23 EST 2000
     - First working version released to CPAN.
-
-$Id: Changes,v 1.11 2005/07/22 10:02:35 roderick Exp $

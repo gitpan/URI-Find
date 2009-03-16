@@ -1,8 +1,6 @@
-# $Id: Schemeless.pm,v 1.8 2005/03/22 16:03:11 roderick Exp $
-#
-# Copyright (c) 2000 Michael G. Schwern.  All rights reserved.  This
-# program is free software; you can redistribute it and/or modify it
-# under the same terms as Perl itself.
+# Copyright (c) 2000, 2009 Michael G. Schwern.  All rights reserved.
+# This program is free software; you can redistribute it and/or modify
+# it under the same terms as Perl itself.
 
 package URI::Find::Schemeless;
 
@@ -14,7 +12,7 @@ use base qw(URI::Find);
 use URI::Find ();
 
 use vars qw($VERSION);
-$VERSION = q$Revision: 1.8 $ =~ /(\d\S+)/ ? $1 : '?';
+$VERSION = 20090316;
 
 my($dnsSet) = 'A-Za-z0-9-';
 
@@ -66,11 +64,11 @@ sub schemeless_uri_re {
                   | (?:\d{1,3}\.){3}\d{1,3} ) # not inet_aton() complete
               (?:
                   (?=[\s\Q$cruftSet\E]) # followed by unrelated thing
-		  (?!\.\w)		#   but don't stop mid foo.xx.bar
-                      (?<!\.p[ml])	#   but exclude Foo.pm and Foo.pl
-                  |$			# or end of line
-                      (?<!\.p[ml])	#   but exclude Foo.pm and Foo.pl
-                  |/[$uricSet#]*	# or slash and URI chars
+                  (?!\.\w)              #   but don't stop mid foo.xx.bar
+                      (?<!\.p[ml])      #   but exclude Foo.pm and Foo.pl
+                  |$                    # or end of line
+                      (?<!\.p[ml])      #   but exclude Foo.pm and Foo.pl
+                  |/[$uricSet#]*        # or slash and URI chars
               )
            }x;
 }
@@ -90,20 +88,20 @@ sub top_level_domain_re {
     my($self) = shift;
 
     my $plain = join '|', qw(
-	aero
-	biz
-	com
-	coop
-	edu
-	gov
-	info
-	int
-	mil
-	museum
-	name
-	net
-	org
-	pro
+        aero
+        biz
+        com
+        coop
+        edu
+        gov
+        info
+        int
+        mil
+        museum
+        name
+        net
+        org
+        pro
     );
 
     return qr/(?:[a-z]{2}|$plain)/;

@@ -1,24 +1,22 @@
-# $Id: Find.pm,v 1.16 2005/07/22 10:02:37 roderick Exp $
-#
-# Copyright (c) 2000 Michael G. Schwern.  All rights reserved.  This
-# program is free software; you can redistribute it and/or modify it
-# under the same terms as Perl itself.
+# Copyright (c) 2000, 2009 Michael G. Schwern.  All rights reserved.
+# This program is free software; you can redistribute it and/or modify
+# it under the same terms as Perl itself.
 
 package URI::Find;
 
-require 5.005;
+require 5.006;
 
 use strict;
 use base qw(Exporter);
 use vars qw($VERSION @EXPORT);
 
-$VERSION	= '0.16';
-@EXPORT		= qw(find_uris);
+$VERSION        = 20090316;
+@EXPORT         = qw(find_uris);
 
 use constant YES => (1==1);
 use constant NO  => !YES;
 
-use Carp	qw(croak);
+use Carp        qw(croak);
 use URI::URL;
 
 require URI;
@@ -37,7 +35,7 @@ my($cruftSet) = q{]),.'";}; #'#
 
 =head1 NAME
 
-  URI::Find - Find URIs in arbitrary text
+URI::Find - Find URIs in arbitrary text
 
 
 =head1 SYNOPSIS
@@ -96,13 +94,28 @@ sub new {
 
 $text is a string to search and possibly modify with your callback.
 
+Alternatively, C<find> can be called with a replacement function for
+the rest of the text:
+
+  use CGI qw(escapeHTML);
+  # ...
+  my $how_many_found = $finder->find(\$text, \&escapeHTML);
+
+will not only call the callback function for every URL found (and
+perform the replacement instructions therein), but also run the rest
+of the text through C<escapeHTML()>. This makes it easier to turn
+plain text which contains URLs into HTML (see example below).
+
 =cut
 
 sub find {
-    @_ == 2 || __PACKAGE__->badinvo;
-    my($self, $r_text) = @_;
+    @_ == 2 || @_ == 3 || __PACKAGE__->badinvo;
+    my($self, $r_text, $escape_func) = @_;
 
-    my $urlsfound = 0;
+    # Might be slower, but it makes the code simpler
+    $escape_func ||= sub { return $_[0] };
+
+    $self->{_uris_found} = 0;
 
     # Don't assume http.
     my $old_strict = URI::URL::strict(1);
@@ -116,32 +129,71 @@ sub find {
 
     my $uriRe = sprintf '(?:%s|%s)', $self->uri_re, $self->schemeless_uri_re;
 
-    $$r_text =~ s{(<$uriRe>|$uriRe)}{
-        my($orig_match) = $1;
-
-        # A heruristic.  Often you'll see things like:
-        # "I saw this site, http://www.foo.com, and its really neat!"
-        # or "Foo Industries (at http://www.foo.com)"
-        # We want to avoid picking up the trailing paren, period or comma.
-        # Of course, this might wreck a perfectly valid URI, more often than
-        # not it corrects a parse mistake.
-        $orig_match = $self->decruft($orig_match);
-
-        if( my $uri = $self->_is_uri(\$orig_match) ) { # Its a URI.
-            $urlsfound++;
-
-            # Don't forget to put any cruft we accidentally matched back.
-            $self->recruft($self->{callback}->($uri, $orig_match));
+    $$r_text =~ s{ (.*?) (?:(<(?:URL:)?)(.+?)(>)|($uriRe)) | (.+?)$ }{
+        my $replace = '';
+        if( defined $6 ) {
+            $replace = $escape_func->($6);
         }
-        else {                        # False alarm.
-            # Again, don't forget the cruft.
-            $self->recruft($orig_match);
+        else {
+            my $maybe_uri = '';
+
+            $replace = $escape_func->($1);
+
+            if( defined $2 ) {
+                $maybe_uri = $3;
+                my $is_uri = do {  # Don't alter $1...
+                    $maybe_uri =~ s/\s+//g;
+                    $maybe_uri =~ $uriRe;
+                };
+
+                if( $is_uri ) {
+                    $replace .= $escape_func->($2);
+                    $replace .= $self->_uri_filter($maybe_uri);
+                    $replace .= $escape_func->($4);
+                }
+                else {
+                    $replace .= $escape_func->($2.$3.$4);
+                }
+            }
+            else {
+                $replace .= $self->_uri_filter($5);
+            }
         }
-    }eg;
+
+        $replace;
+    }gsex;
 
     URI::URL::strict($old_strict);
-    return $urlsfound;
+    return $self->{_uris_found};
 }
+
+
+sub _uri_filter {
+    my($self, $orig_match) = @_;
+
+    # A heuristic.  Often you'll see things like:
+    # "I saw this site, http://www.foo.com, and its really neat!"
+    # or "Foo Industries (at http://www.foo.com)"
+    # We want to avoid picking up the trailing paren, period or comma.
+    # Of course, this might wreck a perfectly valid URI, more often than
+    # not it corrects a parse mistake.
+    $orig_match = $self->decruft($orig_match);
+
+    my $replacement = '';
+    if( my $uri = $self->_is_uri(\$orig_match) ) {
+        # It's a URI
+        $self->{_uris_found}++;
+        $replacement = $self->{callback}->($uri, $orig_match);
+    }
+    else {
+        # False alarm
+        $replacement = $orig_match;
+    }
+
+    # Return recrufted replacement
+    return $self->recruft($replacement);
+}
+
 
 =back
 
@@ -292,7 +344,7 @@ sub schemeless_to_schemed {
     my($self, $uri_cand) = @_;
 
     $uri_cand =~ s|^(<?)ftp\.|$1ftp://ftp\.|
-	or $uri_cand =~ s|^(<?)|${1}http://|;
+        or $uri_cand =~ s|^(<?)|${1}http://|;
 
     return $uri_cand;
 }
@@ -322,10 +374,10 @@ The args are optional.
 =cut
 
 sub badinvo {
-    my $package	= shift;
-    my $level	= @_ ? shift : 0;
-    my $msg	= @_ ? " (" . shift() . ")" : '';
-    my $subname	= (caller $level + 1)[3];
+    my $package = shift;
+    my $level   = @_ ? shift : 0;
+    my $msg     = @_ ? " (" . shift() . ")" : '';
+    my $subname = (caller $level + 1)[3];
     croak "Bogus invocation of $subname$msg";
 }
 
@@ -370,15 +422,16 @@ Check each URI in document to see if it exists.
 Turn plain text into HTML, with each URI found wrapped in an HTML anchor.
 
   use CGI qw(escapeHTML);
+  use URI::Find;
 
-  $text = "<pre>\n" . escapeHTML($text) . "</pre>\n";
   my $finder = URI::Find->new(
-                              sub {
-                                  my($uri, $orig_uri) = @_;
-                                  return qq|<a href="$uri">$orig_uri</a>|;
-                              });
-  $finder->find(\$text);
-
+      sub {
+          my($uri, $orig_uri) = @_;
+          return qq|<a href="$uri">$orig_uri</a>|;
+      }
+  );
+  $finder->find(\$text, \&escapeHTML);
+  print "<pre>$text</pre>";
 
 =head1 CAVEATS, BUGS, ETC...
 
@@ -404,7 +457,7 @@ I might remove it in a future version.
 Michael G Schwern <schwern@pobox.com> with insight from Uri Gutman,
 Greg Bacon, Jeff Pinyan, Roderick Schertler and others.
 
-Currently maintained by Roderick Schertler <roderick@argon.org>.
+Roderick Schertler <roderick@argon.org> maintained versions 0.11 to 0.16.
 
 =cut
 
@@ -416,17 +469,18 @@ sub _is_uri {
     my $uri = $$r_uri_cand;
 
     # Translate schemeless to schemed if necessary.
-    $uri = $self->schemeless_to_schemed($uri) unless
-      $uri =~ /^<?$schemeRe:/;
+    $uri = $self->schemeless_to_schemed($uri) if
+      $uri =~ $self->schemeless_uri_re   and
+      $uri !~ /^<?$schemeRe:/;
 
     eval {
         $uri = URI::URL->new($uri);
     };
 
-    if($@ || !defined $uri) {	# leave everything untouched, its not a URI.
+    if($@ || !defined $uri) {   # leave everything untouched, its not a URI.
         return NO;
     }
-    else {			# Its a URI.
+    else {                      # Its a URI.
         return $uri;
     }
 }

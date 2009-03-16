@@ -1,14 +1,16 @@
- $Id: MANIFEST,v 1.7 2004/10/10 21:31:50 roderick Exp $
-
+Build.PL
 Changes
 INSTALL
-MANIFEST
-MANIFEST.SKIP
-META.yml                                 Module meta-data (added by MakeMaker)
-Makefile.PL
-README
-TODO
 lib/URI/Find.pm
 lib/URI/Find/Schemeless.pm
+MANIFEST			This list of files
+MANIFEST.SKIP
+META.yml
+README
+t/filter.t
 t/Find.t
+t/is_schemed.t
 t/load-schemeless.t
+t/rfc3986_appendix_c.t
+TODO
+SIGNATURE    Added here by Module::Build

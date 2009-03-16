@@ -1,12 +1,32 @@
-# http://module-build.sourceforge.net/META-spec.html
-#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
-name:         URI-Find
-version:      0.16
-version_from: lib/URI/Find.pm
-installdirs:  site
+---
+name: URI-Find
+version: 20090316
+author:
+  - 'Michael G Schwern <schwern@pobox.com>'
+abstract: Find URIs in arbitrary text
+license: perl
+resources:
+  bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=URI-Find
+  homepage: http://search.cpan.org/dist/URI-Find
+  license: http://dev.perl.org/licenses/
+  repository: http://github.com/schwern/uri-find/tree/master
+configure_requires:
+  Module::Build: 0.30
 requires:
-    URI:                           1.00
-    URI::URL:                      5.00
-
-distribution_type: module
-generated_by: ExtUtils::MakeMaker version 6.17
+  URI: 1.00
+  URI::URL: 5.00
+  perl: 5.6.0
+build_requires:
+  Module::Build: 0.30
+  Test::More: 0.82
+provides:
+  URI::Find:
+    file: lib/URI/Find.pm
+    version: 20090316
+  URI::Find::Schemeless:
+    file: lib/URI/Find/Schemeless.pm
+    version: 20090316
+generated_by: Module::Build version 0.3103
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.2.html
+  version: 1.2
