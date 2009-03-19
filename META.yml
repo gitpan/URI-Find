@@ -1,6 +1,6 @@
 ---
 name: URI-Find
-version: 20090316
+version: 20090319
 author:
   - 'Michael G Schwern <schwern@pobox.com>'
 abstract: Find URIs in arbitrary text
@@ -22,10 +22,10 @@ build_requires:
 provides:
   URI::Find:
     file: lib/URI/Find.pm
-    version: 20090316
+    version: 20090319
   URI::Find::Schemeless:
     file: lib/URI/Find/Schemeless.pm
-    version: 20090316
+    version: 20090319
 generated_by: Module::Build version 0.3103
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
