@@ -13,4 +13,3 @@ t/is_schemed.t
 t/load-schemeless.t
 t/rfc3986_appendix_c.t
 TODO
-SIGNATURE    Added here by Module::Build
