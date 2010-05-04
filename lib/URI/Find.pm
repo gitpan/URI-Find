@@ -10,7 +10,7 @@ use strict;
 use base qw(Exporter);
 use vars qw($VERSION @EXPORT);
 
-$VERSION        = 20100211;
+$VERSION        = 20100504;
 @EXPORT         = qw(find_uris);
 
 use constant YES => (1==1);
@@ -21,7 +21,9 @@ use URI::URL;
 
 require URI;
 
-my($schemeRe) = $URI::scheme_re;
+# URI scheme pattern without the non-alpha numerics.
+# Those are extremely uncommon and interfere with the match.
+my($schemeRe) = qr/[a-zA-Z][a-zA-Z0-9]*/;
 my($uricSet)  = $URI::uric;
 
 # We need to avoid picking up 'HTTP::Request::Common' so we have a
@@ -37,7 +39,6 @@ my($cruftSet) = q{]),.'";}; #'#
 
 URI::Find - Find URIs in arbitrary text
 
-
 =head1 SYNOPSIS
 
   require URI::Find;
@@ -45,7 +46,6 @@ URI::Find - Find URIs in arbitrary text
   my $finder = URI::Find->new(\&callback);
 
   $how_many_found = $finder->find(\$text);
-
 
 =head1 DESCRIPTION
 
@@ -320,7 +320,15 @@ sub decruft {
     $self->{end_cruft} = '';
 
     if( $orig_match =~ s/([\Q$cruftSet\E]+)$// ) {
-        $self->{end_cruft} = $1;
+        # urls can end with HTML entities if found in HTML so let's put back semicolons
+        # if this looks like the case
+        my $cruft = $1;
+        if( $cruft =~ /^;/ && $orig_match =~ /\&(\#[1-9]\d{1,3}|[a-zA-Z]{2,8})$/) {
+            $orig_match .= ';';
+            $cruft =~ s/^;//;
+        }
+
+        $self->{end_cruft} = $cruft if $cruft;
     }
 
     return $orig_match;

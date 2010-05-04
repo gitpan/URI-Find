@@ -1,0 +1,43 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.61.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It will check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 6057930ea78bb75e1c5d52b0a6f164dd667e81b2 Build.PL
+SHA1 9f45840b1a2359ce50c5ca0123d68a10e30315e3 Changes
+SHA1 3ca0307f0585442c160041b8d8f3472359735108 INSTALL
+SHA1 85c3079f3b3525ac33fecc350a23960a624bd6c6 MANIFEST
+SHA1 b58525ce40ec4c85489b4791aa8953fc4b62d5a3 MANIFEST.SKIP
+SHA1 d2f4ec22fbfdf2b8a91a7176497b00a193c95469 META.yml
+SHA1 fc72946137d28d945b8c7027b4a49a001ec49cd1 README
+SHA1 7dc0589de524cbd4c983c5cd6e9da58fd474b34a TODO
+SHA1 4bf2140aeadeed4b314119795f275f3c1a957431 bin/urifind
+SHA1 9bfafdf4f7b520411f30c52d09e65ffe349d6790 lib/URI/Find.pm
+SHA1 4d19120412b05e1f0ba2c8d5bb0218883258017d lib/URI/Find/Schemeless.pm
+SHA1 0e60f3713dc4b6ae6fb24e3ce3fb29921e8c3e0c t/Find.t
+SHA1 20f14cb0c5b625cc2040183426c97f0cfad7e148 t/filter.t
+SHA1 1071febaa25419c5cdb2580bf87ee81834e70132 t/html.t
+SHA1 2c057ac42eb47f6b7da78c3b7ebb20b94f33e719 t/is_schemed.t
+SHA1 a0fdf62d822e769d80b229bb88f1a013f6ab0964 t/load-schemeless.t
+SHA1 0c5eb1bda18407bdf26b8831a08cad4a14938082 t/rfc3986_appendix_c.t
+SHA1 2b3182c56945ad7a379f82dfaa50e2cc0bfe8d71 t/urifind/find.t
+SHA1 9ff9e4e6fef205eebead0f792da79dedd61b4b7e t/urifind/pod.t
+SHA1 0cb2627de8403934f9893ed2e86145e7c372402c t/urifind/sciencenews
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.13 (Darwin)
+
+iEYEARECAAYFAkvgWysACgkQWMohlhD1Qyd15ACcClP5dl0HCvGx3rJkYIfmJEM1
+Gj4AoId6e7vrSFe6evi6E1mBD3WtRcUZ
+=0kXp
+-----END PGP SIGNATURE-----
