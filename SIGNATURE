@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.61.
+signed via the Module::Signature module, version 0.68.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -15,18 +15,19 @@ not run its Makefile.PL or Build.PL.
 Hash: SHA1
 
 SHA1 6057930ea78bb75e1c5d52b0a6f164dd667e81b2 Build.PL
-SHA1 b0f8e3b251fb4ccd7864332ddcf9dc54efbd5a4a Changes
+SHA1 4d9cff2838e300a3a663ff922aa7794d8bf104fd Changes
 SHA1 3ca0307f0585442c160041b8d8f3472359735108 INSTALL
-SHA1 85c3079f3b3525ac33fecc350a23960a624bd6c6 MANIFEST
-SHA1 b58525ce40ec4c85489b4791aa8953fc4b62d5a3 MANIFEST.SKIP
-SHA1 66e3accf3332bc65e0fce615525b5b0f42fec9e0 META.yml
+SHA1 906484f30faafff05f5c92da719b605d799c1e3e MANIFEST
+SHA1 fe61e38edb3e406107b3953fd0b9b10dd7b85823 MANIFEST.SKIP
+SHA1 8a4947eb36de2bcf92ffd092815360c07f753d00 META.json
+SHA1 631f79889ada11cd5d794db1f081f4df7f47275e META.yml
 SHA1 fc72946137d28d945b8c7027b4a49a001ec49cd1 README
 SHA1 7dc0589de524cbd4c983c5cd6e9da58fd474b34a TODO
-SHA1 6c25e91b26a506217cac6cb499db78543ad02e29 bin/urifind
-SHA1 6bea554311a1a1c65825b63e6f2feab214f94130 lib/URI/Find.pm
-SHA1 569c655e04e33a10e5424b340ea85c276c772a5a lib/URI/Find/Schemeless.pm
-SHA1 0e60f3713dc4b6ae6fb24e3ce3fb29921e8c3e0c t/Find.t
-SHA1 20f14cb0c5b625cc2040183426c97f0cfad7e148 t/filter.t
+SHA1 50ea80833e8160f7123912596b7488eac15342e3 bin/urifind
+SHA1 36311e3be543c9b15c4211b81b5ef034eeb067d8 lib/URI/Find.pm
+SHA1 0876d1e589821e2abe2c3f718c0ac8bed8b9f698 lib/URI/Find/Schemeless.pm
+SHA1 c0d4570cd9b83c474cb3761a206edc139653f7f7 t/Find.t
+SHA1 789861fdf1ab6465748f8cacafcef27ee70a7ac9 t/filter.t
 SHA1 1071febaa25419c5cdb2580bf87ee81834e70132 t/html.t
 SHA1 2c057ac42eb47f6b7da78c3b7ebb20b94f33e719 t/is_schemed.t
 SHA1 a0fdf62d822e769d80b229bb88f1a013f6ab0964 t/load-schemeless.t
@@ -35,9 +36,9 @@ SHA1 6aaf29926da83d3c369cf28969bd6c48df8deff4 t/urifind/find.t
 SHA1 9ff9e4e6fef205eebead0f792da79dedd61b4b7e t/urifind/pod.t
 SHA1 0cb2627de8403934f9893ed2e86145e7c372402c t/urifind/sciencenews
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.13 (Darwin)
+Version: GnuPG v2.0.18 (Darwin)
 
-iEYEARECAAYFAkviICwACgkQWMohlhD1Qyd6RQCfRJPEJmwvs3AMmHFNdKgBXf+W
-KiEAn0ghpQ1h1af29aMwazWXcr6of5UF
-=AiB8
+iEYEARECAAYFAk6gvb4ACgkQWMohlhD1Qyf+kgCcDCmtOsP+qEdZ6TT0UhBghbAo
+aLIAoMhKn9Sy1KSKywBTYlJXbydX0MV3
+=X1My
 -----END PGP SIGNATURE-----

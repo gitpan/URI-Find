@@ -10,7 +10,7 @@ use strict;
 use base qw(Exporter);
 use vars qw($VERSION @EXPORT);
 
-$VERSION        = 20100505;
+$VERSION        = 20111020;
 @EXPORT         = qw(find_uris);
 
 use constant YES => (1==1);
@@ -113,6 +113,10 @@ sub find {
     # Might be slower, but it makes the code simpler
     $escape_func ||= sub { return $_[0] };
 
+    # Store the escape func in the object temporarily for use
+    # by other methods.
+    local $self->{escape_func} = $escape_func;
+
     $self->{_uris_found} = 0;
 
     # Don't assume http.
@@ -135,7 +139,7 @@ sub find {
         else {
             my $maybe_uri = '';
 
-            $replace = $escape_func->($1);
+            $replace = $escape_func->($1) if length $1;
 
             if( defined $2 ) {
                 $maybe_uri = $3;
@@ -161,7 +165,7 @@ sub find {
                         my $post = $4;
                         do { $self->find(\$maybe_uri, $escape_func) };
                         $replace .= $escape_func->($pre);
-                        $replace .= $maybe_uri;
+                        $replace .= $maybe_uri;  # already escaped by find()
                         $replace .= $escape_func->($post);
                     }
                     else {
@@ -201,7 +205,7 @@ sub _uri_filter {
     }
     else {
         # False alarm
-        $replacement = $orig_match;
+        $replacement = $self->{escape_func}->($orig_match);
     }
 
     # Return recrufted replacement
@@ -324,6 +328,13 @@ sub decruft {
         if( $cruft =~ /^;/ && $orig_match =~ /\&(\#[1-9]\d{1,3}|[a-zA-Z]{2,8})$/) {
             $orig_match .= ';';
             $cruft =~ s/^;//;
+        }
+
+        my $opening = $orig_match =~ tr/(/(/;
+        my $closing = $orig_match =~ tr/)/)/;
+        if ( $cruft =~ /\)$/ && $opening == ( $closing + 1 ) ) {
+            $orig_match .= ')';
+            $cruft =~ s/\)$//;
         }
 
         $self->{end_cruft} = $cruft if $cruft;
