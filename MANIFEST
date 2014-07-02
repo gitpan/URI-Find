@@ -20,4 +20,3 @@ t/urifind/find.t
 t/urifind/pod.t
 t/urifind/sciencenews
 TODO
-SIGNATURE    Added here by Module::Build
