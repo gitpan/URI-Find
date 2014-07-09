@@ -27,20 +27,19 @@
       },
       "runtime" : {
          "requires" : {
-            "URI" : "1.00",
-            "URI::URL" : "5.00",
-            "perl" : "v5.6.0"
+            "URI" : "1.60",
+            "perl" : "v5.8.9"
          }
       }
    },
    "provides" : {
       "URI::Find" : {
          "file" : "lib/URI/Find.pm",
-         "version" : "20140702"
+         "version" : "20140709"
       },
       "URI::Find::Schemeless" : {
          "file" : "lib/URI/Find/Schemeless.pm",
-         "version" : "20140702"
+         "version" : "20140709"
       }
    },
    "release_status" : "stable",
@@ -56,5 +55,5 @@
          "url" : "http://github.com/schwern/URI-Find/"
       }
    },
-   "version" : "20140702"
+   "version" : "20140709"
 }
